@@ -18,3 +18,24 @@
 | deepseek-ai/DeepSeek-R1-0528-Qwen3-8B | ❌ |
 | microsoft/Phi-4-reasoning-plus | ❌ |
 | baidu/ERNIE-4.5-21B-A3B-PT | ❌ |
+
+
+
+# Build Docker Image
+
+## GH200
+
+```
+git clone https://github.com/vllm-project/vllm.git
+cd vllm
+python3 use_existing_torch.py
+nohup sh -c 'DOCKER_BUILDKIT=1 docker build . \
+  --target vllm-openai \
+  --platform "linux/arm64" \
+  -t vllm/vllm-gh200-openai:latest \
+  --build-arg max_jobs=66 \
+  --build-arg nvcc_threads=2 \
+  --build-arg torch_cuda_arch_list="9.0+PTX" \
+  --build-arg vllm_fa_cmake_gpu_arches="90-real" \
+  -f docker/Dockerfile' > build_log.log 2>&1 &
+```

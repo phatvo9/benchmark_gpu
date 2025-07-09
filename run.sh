@@ -4,23 +4,26 @@
 # This script automates the benchmarking process for multiple Hugging Face models
 
 set -e  # Exit on any error
-
+tag=${1:-latest}
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Fixed model list - Add your Hugging Face model IDs here
 MODELS=(
-    ## Small
+    # Rush
     unsloth/Llama-3.2-1B-Instruct
     microsoft/Phi-4-mini-instruct
+    deepseek-ai/DeepSeek-R1-0528-Qwen3-8B
+    unsloth/gemma-3-12b-it
+    RedHatAI/Qwen3-30B-A3B-FP8-dynamic
 
+    ## Small
     #unsloth/Llama-3.2-3B-Instruct
     #Qwen/Qwen3-4B
     #unsloth/gemma-3-4b-it
     #openbmb/MiniCPM3-4B
     #Qwen/Qwen3-0.6B
     ## Medium
-    deepseek-ai/DeepSeek-R1-0528-Qwen3-8B
     #unsloth/gemma-3n-E4B-it
     #unsloth/Llama-3.1-8B-Instruct
     #Qwen/Qwen2-7B-Instruct
@@ -29,7 +32,6 @@ MODELS=(
     ## Large
     #Qwen/Qwen-14B
     #microsoft/Phi-4-reasoning-plus
-    unsloth/gemma-3-12b-it
     #unsloth/gemma-3-27b-it
     #Qwen/Qwen3-32B
     #baidu/ERNIE-4.5-21B-A3B-PT
@@ -39,7 +41,6 @@ MODELS=(
     #RedHatAI/gemma-3-27b-it-FP8-dynamic
     #RedHatAI/Meta-Llama-3.1-8B-Instruct-FP8
     #RedHatAI/Qwen3-32B-FP8-dynamic
-    RedHatAI/Qwen3-30B-A3B-FP8-dynamic
 
 )
 
@@ -198,7 +199,7 @@ start_server() {
     export MODEL_ID="$model_id"
     export CONTAINER_NAME="${CONTAINER_NAME}_${model_id//\//_}"
     export FRAMEWORK="$FRAMEWORK"
-    cmd="${SERVER_SCRIPT} ${model_id} ${CONTAINER_NAME} > "$log_file" 2>&1 &"
+    cmd="${SERVER_SCRIPT} ${model_id} ${CONTAINER_NAME} $tag > "$log_file" 2>&1 &"
     # Run server script and capture output
     if ! $cmd
     then
