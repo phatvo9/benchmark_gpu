@@ -11,32 +11,35 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Fixed model list - Add your Hugging Face model IDs here
 MODELS=(
     ## Small
+    unsloth/Llama-3.2-1B-Instruct
+    microsoft/Phi-4-mini-instruct
+
+    #unsloth/Llama-3.2-3B-Instruct
     #Qwen/Qwen3-4B
-    unsloth/Llama-3.2-3B-Instruct
     #unsloth/gemma-3-4b-it
-    openbmb/MiniCPM3-4B
-    Qwen/Qwen3-0.6B
+    #openbmb/MiniCPM3-4B
+    #Qwen/Qwen3-0.6B
     ## Medium
     deepseek-ai/DeepSeek-R1-0528-Qwen3-8B
     #unsloth/gemma-3n-E4B-it
-    unsloth/Llama-3.1-8B-Instruct
+    #unsloth/Llama-3.1-8B-Instruct
     #Qwen/Qwen2-7B-Instruct
-    openbmb/MiniCPM-o-2_6
+    #openbmb/MiniCPM-o-2_6
     #openbmb/MiniCPM4-8B
     ## Large
     #Qwen/Qwen-14B
     #microsoft/Phi-4-reasoning-plus
-    #google/gemma-3-12b-it
-    #google/gemma-3-27b-it
+    unsloth/gemma-3-12b-it
+    #unsloth/gemma-3-27b-it
     #Qwen/Qwen3-32B
     #baidu/ERNIE-4.5-21B-A3B-PT
     #Qwen/Qwen3-30B-A3B
     ## FP8
     #RedHatAI/gemma-3-4b-it-FP8-dynamic
     #RedHatAI/gemma-3-27b-it-FP8-dynamic
-    RedHatAI/Meta-Llama-3.1-8B-Instruct-FP8
+    #RedHatAI/Meta-Llama-3.1-8B-Instruct-FP8
     #RedHatAI/Qwen3-32B-FP8-dynamic
-    #RedHatAI/Qwen3-30B-A3B-FP8-dynamic
+    RedHatAI/Qwen3-30B-A3B-FP8-dynamic
 
 )
 
@@ -284,7 +287,7 @@ stop_server_and_cleanup() {
     # Clean up model checkpoints
     print_status "Cleaning up model checkpoints..."
     if [[ -d "$MODEL_CACHE_DIR" ]]; then
-        rm -rf "$MODEL_CACHE_DIR"/*
+        sudo rm -rf "$MODEL_CACHE_DIR"/*
     fi
     
     # Clean up Docker images (optional - uncomment if you want to remove images)

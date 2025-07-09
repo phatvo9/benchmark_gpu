@@ -10,8 +10,8 @@
 | unsloth/Llama-3.1-8B-Instruct | RedHatAI/Meta-Llama-3.1-8B-Instruct-FP8 |
 | unsloth/gemma-3-4b-it | RedHatAI/gemma-3-4b-it-FP8-dynamic |
 | unsloth/gemma-3n-E4B-it | ❌ |
-| google/gemma-3-12b-it | ❌ |
-| google/gemma-3-27b-it | RedHatAI/gemma-3-27b-it-FP8-dynamic |
+| unsloth/gemma-3-12b-it | ❌ |
+| unsloth/gemma-3-27b-it | RedHatAI/gemma-3-27b-it-FP8-dynamic |
 | openbmb/MiniCPM3-4B | ❌ |
 | openbmb/MiniCPM-o-2_6 | ❌ |
 | openbmb/MiniCPM4-8B | ❌ |
