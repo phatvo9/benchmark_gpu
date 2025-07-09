@@ -1,0 +1,6 @@
+[submodule "external/llmperf"]
+	path = external/llmperf
+	url = https://github.com/ray-project/llmperf.git
+[submodule "external/model_benchmark"]
+	path = external/model_benchmark
+	url = git@github.com:Clarifai/model-benchmark.git

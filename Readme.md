@@ -1,0 +1,20 @@
+| Model | FP8 |
+|-------|-----|
+| Qwen/Qwen3-0.6B | ❌ |
+| Qwen/Qwen3-4B | ❌ |
+| Qwen/Qwen2-7B-Instruct | ❌ |
+| Qwen/Qwen-14B | ❌ |
+| Qwen/Qwen3-32B | RedHatAI/Qwen3-32B-FP8-dynamic |
+| Qwen/Qwen3-30B-A3B | RedHatAI/Qwen3-30B-A3B-FP8-dynamic |
+| unsloth/Llama-3.2-3B-Instruct | ❌ |
+| unsloth/Llama-3.1-8B-Instruct | RedHatAI/Meta-Llama-3.1-8B-Instruct-FP8 |
+| unsloth/gemma-3-4b-it | RedHatAI/gemma-3-4b-it-FP8-dynamic |
+| unsloth/gemma-3n-E4B-it | ❌ |
+| google/gemma-3-12b-it | ❌ |
+| google/gemma-3-27b-it | RedHatAI/gemma-3-27b-it-FP8-dynamic |
+| openbmb/MiniCPM3-4B | ❌ |
+| openbmb/MiniCPM-o-2_6 | ❌ |
+| openbmb/MiniCPM4-8B | ❌ |
+| deepseek-ai/DeepSeek-R1-0528-Qwen3-8B | ❌ |
+| microsoft/Phi-4-reasoning-plus | ❌ |
+| baidu/ERNIE-4.5-21B-A3B-PT | ❌ |
