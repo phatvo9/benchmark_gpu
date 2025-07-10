@@ -3,7 +3,7 @@
 # Model Benchmark Automation Script
 # This script automates the benchmarking process for multiple Hugging Face models
 
-set -e  # Exit on any error
+set +e  # Exit on any error
 tag=${1:-latest}
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -19,27 +19,27 @@ MODELS=(
 
     ## Small
     #unsloth/Llama-3.2-3B-Instruct
-    #Qwen/Qwen3-4B
-    #unsloth/gemma-3-4b-it
+    Qwen/Qwen3-0.6B
+    Qwen/Qwen3-4B
+    unsloth/gemma-3-4b-it
     #openbmb/MiniCPM3-4B
-    #Qwen/Qwen3-0.6B
-    ## Medium
+    # Medium
     #unsloth/gemma-3n-E4B-it
-    #unsloth/Llama-3.1-8B-Instruct
-    #Qwen/Qwen2-7B-Instruct
-    #openbmb/MiniCPM-o-2_6
+    unsloth/Llama-3.1-8B-Instruct
+    Qwen/Qwen2-7B-Instruct
+    openbmb/MiniCPM-o-2_6
     #openbmb/MiniCPM4-8B
-    ## Large
-    #Qwen/Qwen-14B
-    #microsoft/Phi-4-reasoning-plus
-    #unsloth/gemma-3-27b-it
-    #Qwen/Qwen3-32B
+    # Large
+    Qwen/Qwen-14B
+    microsoft/Phi-4-reasoning-plus
+    unsloth/gemma-3-27b-it
+    Qwen/Qwen3-32B
     #baidu/ERNIE-4.5-21B-A3B-PT
-    #Qwen/Qwen3-30B-A3B
-    ## FP8
+    Qwen/Qwen3-30B-A3B
+    # FP8
     #RedHatAI/gemma-3-4b-it-FP8-dynamic
-    #RedHatAI/gemma-3-27b-it-FP8-dynamic
-    #RedHatAI/Meta-Llama-3.1-8B-Instruct-FP8
+    RedHatAI/gemma-3-27b-it-FP8-dynamic
+    RedHatAI/Meta-Llama-3.1-8B-Instruct-FP8
     #RedHatAI/Qwen3-32B-FP8-dynamic
 
 )
@@ -50,7 +50,7 @@ FRAMEWORK="$DEFAULT_FRAMEWORK"
 SUPPORTED_FRAMEWORKS=("vllm" "sglang" "lmdeploy")
 
 # Script paths
-BENCHMARK_SCRIPT="./clarifai_benchmark.sh"
+BENCHMARK_SCRIPT=${2:-"./clarifai_gpu_benchmark.sh"}
 CONTAINER_NAME="openai_server"
 MODEL_CACHE_DIR="${HOME}/.cache/huggingface/hub"
 
@@ -313,9 +313,9 @@ benchmark_model() {
     
     # Run benchmark
     if ! run_benchmark "$model_id"; then
-        print_error "Failed to run benchmark for model: $model_id"
-        stop_server_and_cleanup "$model_id"
-        return 1
+       print_error "Failed to run benchmark for model: $model_id"
+       stop_server_and_cleanup "$model_id"
+       return 1
     fi
     
     # Stop server and cleanup
@@ -411,8 +411,8 @@ main() {
         
         # Brief pause between models
         if [[ $((successful_benchmarks + failed_benchmarks)) -lt ${#MODELS[@]} ]]; then
-            print_status "Waiting 10 seconds before next model..."
-            sleep 10
+            print_status "Waiting 5 seconds before next model..."
+            sleep 5
         fi
     done
     
@@ -435,7 +435,7 @@ main() {
 }
 
 # Trap to cleanup on script exit
-trap 'cleanup_containers' EXIT
+#trap 'cleanup_containers' EXIT
 
 # Run main function with all arguments
 main "$@"

@@ -19,7 +19,13 @@
 | microsoft/Phi-4-reasoning-plus | ❌ |
 | baidu/ERNIE-4.5-21B-A3B-PT | ❌ |
 
+# Install conda
 
+```bash
+curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh
+/root/miniconda3/bin/conda init
+```
 
 # Build Docker Image
 
