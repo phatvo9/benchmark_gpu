@@ -9,6 +9,7 @@ set +e
 tag="latest"
 BENCHMARK_SCRIPT="./clarifai_gpu_benchmark.sh"
 model_path="models/full.txt"
+extra_server_args=""
 
 while [[ $# -gt 0 ]]; do
   key="$1"
@@ -19,6 +20,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --script)
       BENCHMARK_SCRIPT="$2"
+      shift 2
+      ;;
+    --extra-args)
+      extra_server_args="$2"
       shift 2
       ;;
     --model)
@@ -197,7 +202,9 @@ start_server() {
     export MODEL_ID="$model_id"
     export CONTAINER_NAME="openaiserver_${model_id//\//_}"
     export FRAMEWORK="$FRAMEWORK"
-    cmd="${SERVER_SCRIPT} ${model_id} ${CONTAINER_NAME} $tag > "$log_file" 2>&1 &"
+    cmd="${SERVER_SCRIPT} ${model_id} ${CONTAINER_NAME} $tag $extra_server_args"
+    echo "Start server with cmd"
+    echo $cmd
     # Run server script and capture output
     if ! $cmd
     then
