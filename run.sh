@@ -3,46 +3,45 @@
 # Model Benchmark Automation Script
 # This script automates the benchmarking process for multiple Hugging Face models
 
-set +e  # Exit on any error
-tag=${1:-latest}
+set +e 
+
+# Args
+tag="latest"
+BENCHMARK_SCRIPT="./clarifai_gpu_benchmark.sh"
+model_path="models/full.txt"
+
+while [[ $# -gt 0 ]]; do
+  key="$1"
+  case $key in
+    --tag)
+      tag="$2"
+      shift 2
+      ;;
+    --script)
+      BENCHMARK_SCRIPT="$2"
+      shift 2
+      ;;
+    --model)
+      model_path="$2"
+      shift 2
+      ;;
+    *)
+      echo "Unknown option: $1"
+      exit 1
+      ;;
+  esac
+done
+
+# Read models.txt into MODELS array
+MODELS=()
+while IFS= read -r line; do
+  [[ -z "$line" || "$line" =~ ^# ]] && continue
+  MODELS+=("$line")
+done < $model_path
+
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Fixed model list - Add your Hugging Face model IDs here
-MODELS=(
-    # Rush
-    unsloth/Llama-3.2-1B-Instruct
-    microsoft/Phi-4-mini-instruct
-    deepseek-ai/DeepSeek-R1-0528-Qwen3-8B
-    unsloth/gemma-3-12b-it
-    RedHatAI/Qwen3-30B-A3B-FP8-dynamic
-
-    ## Small
-    #unsloth/Llama-3.2-3B-Instruct
-    Qwen/Qwen3-0.6B
-    Qwen/Qwen3-4B
-    unsloth/gemma-3-4b-it
-    #openbmb/MiniCPM3-4B
-    # Medium
-    #unsloth/gemma-3n-E4B-it
-    unsloth/Llama-3.1-8B-Instruct
-    Qwen/Qwen2-7B-Instruct
-    openbmb/MiniCPM-o-2_6
-    #openbmb/MiniCPM4-8B
-    # Large
-    Qwen/Qwen-14B
-    microsoft/Phi-4-reasoning-plus
-    unsloth/gemma-3-27b-it
-    Qwen/Qwen3-32B
-    #baidu/ERNIE-4.5-21B-A3B-PT
-    Qwen/Qwen3-30B-A3B
-    # FP8
-    #RedHatAI/gemma-3-4b-it-FP8-dynamic
-    RedHatAI/gemma-3-27b-it-FP8-dynamic
-    RedHatAI/Meta-Llama-3.1-8B-Instruct-FP8
-    #RedHatAI/Qwen3-32B-FP8-dynamic
-
-)
 
 # Framework configuration
 DEFAULT_FRAMEWORK="vllm"
@@ -50,7 +49,6 @@ FRAMEWORK="$DEFAULT_FRAMEWORK"
 SUPPORTED_FRAMEWORKS=("vllm" "sglang" "lmdeploy")
 
 # Script paths
-BENCHMARK_SCRIPT=${2:-"./clarifai_gpu_benchmark.sh"}
 CONTAINER_NAME="openai_server"
 MODEL_CACHE_DIR="${HOME}/.cache/huggingface/hub"
 
@@ -197,7 +195,7 @@ start_server() {
     
     # Start server in background with model ID
     export MODEL_ID="$model_id"
-    export CONTAINER_NAME="${CONTAINER_NAME}_${model_id//\//_}"
+    export CONTAINER_NAME="openaiserver_${model_id//\//_}"
     export FRAMEWORK="$FRAMEWORK"
     cmd="${SERVER_SCRIPT} ${model_id} ${CONTAINER_NAME} $tag > "$log_file" 2>&1 &"
     # Run server script and capture output
@@ -249,7 +247,7 @@ run_benchmark() {
     export MODEL_ID="$model_id"
     export FRAMEWORK="$FRAMEWORK"
     export RESULT_DIR="$model_result_dir"
-    #export CONTAINER_NAME="$CONTAINER_NAME"
+    export CONTAINER_NAME="$CONTAINER_NAME"
     
     # Run benchmark
     cmd="${BENCHMARK_SCRIPT} ${model_id} ${RESULT_DIR} > ${benchmark_log} 2>&1"
