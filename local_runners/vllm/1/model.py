@@ -66,7 +66,7 @@ class VLLMLlamaModel(OpenAIModelClass):
         'gpu_memory_utilization': 0.9,
         'max-num-batched-tokens': 8192,
         'tensor_parallel_size': 1,
-        'port': 23333,
+        'port': os.environ.get("SERVER_PORT", 23333),
         'host': 'localhost',
     }
 

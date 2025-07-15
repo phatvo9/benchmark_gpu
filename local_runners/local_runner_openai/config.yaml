@@ -1,0 +1,12 @@
+build_info:
+  python_version: '3.12'
+inference_compute_info:
+  cpu_limit: '3'
+  cpu_memory: 14Gi
+  num_accelerators: 0
+model:
+  app_id: local-runner-app
+  id: local-runner-model
+  model_type_id: text-to-text
+  user_id: phatvo
+num_threads: 128

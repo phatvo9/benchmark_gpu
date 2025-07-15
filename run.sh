@@ -3,6 +3,7 @@
 # Model Benchmark Automation Script
 # This script automates the benchmarking process for multiple Hugging Face models
 
+FRAMEWORK=vllm
 set +e 
 
 # Args
@@ -10,6 +11,7 @@ tag="latest"
 BENCHMARK_SCRIPT="./clarifai_gpu_benchmark.sh"
 model_path="models/full.txt"
 extra_server_args=""
+server_port=23333
 
 while [[ $# -gt 0 ]]; do
   key="$1"
@@ -22,8 +24,16 @@ while [[ $# -gt 0 ]]; do
       BENCHMARK_SCRIPT="$2"
       shift 2
       ;;
+    --fw)
+      FRAMEWORK="$2"
+      shift 2
+      ;;
     --extra-args)
       extra_server_args="$2"
+      shift 2
+      ;;
+    --port)
+      server_port="$2"
       shift 2
       ;;
     --model)
@@ -37,6 +47,8 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+export SERVER_PORT=$server_port
+
 # Read models.txt into MODELS array
 MODELS=()
 while IFS= read -r line; do
@@ -49,8 +61,6 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 
 # Framework configuration
-DEFAULT_FRAMEWORK="vllm"
-FRAMEWORK="$DEFAULT_FRAMEWORK"
 SUPPORTED_FRAMEWORKS=("vllm" "sglang" "lmdeploy")
 
 # Script paths
@@ -205,20 +215,31 @@ start_server() {
     cmd="${SERVER_SCRIPT} ${model_id} ${CONTAINER_NAME} $tag $extra_server_args"
     echo "Start server with cmd"
     echo $cmd
-    # Run server script and capture output
-    if ! $cmd
-    then
+    output=$($cmd 2>&1)
+    exit_code=$?
+
+    if echo "$output" | grep -q "Error response from daemon: Conflict"; then
+        echo "Docker conflict detected, removing existing container..."
+        docker rm "$CONTAINER_NAME" -f
+        echo "Removed conflicting container. Retrying server start..."
+        if ! $cmd; then
+            print_error "Failed to start $FRAMEWORK server for model: $model_id (after removing conflicting container)"
+            return 1
+        fi
+    elif [ $exit_code -ne 0 ]; then
         print_error "Failed to start $FRAMEWORK server for model: $model_id"
         return 1
     fi
+
     docker logs -f ${CONTAINER_NAME} > $log_file 2>&1&
     print_status "Waiting for $FRAMEWORK server to be ready..."
     # Start log stream in background
     docker logs -f "$CONTAINER_NAME" 2>&1 | \
     while read -r line; do
       echo "$line"
-      if [[ "$line" == *"running on http://"* ]] || [[ "$line" == *"Application startup complete"* ]]; then
+      if [[ "$line" == *"The server is fired up and ready to roll!"* ]] || [[ "$line" == *"Application startup complete"* ]]; then
         echo "✅ ${FRAMEWORK} server is ready!"
+        sleep 3
         ready=1
         pkill -P $$ docker  # kill `docker logs -f`
         break
@@ -257,7 +278,7 @@ run_benchmark() {
     export CONTAINER_NAME="$CONTAINER_NAME"
     
     # Run benchmark
-    cmd="${BENCHMARK_SCRIPT} ${model_id} ${RESULT_DIR} > ${benchmark_log} 2>&1"
+    cmd="${BENCHMARK_SCRIPT} ${model_id} ${RESULT_DIR} $server_port > ${benchmark_log} 2>&1"
     if $cmd; then
         print_success "Benchmark completed for model: $model_id"
         return 0

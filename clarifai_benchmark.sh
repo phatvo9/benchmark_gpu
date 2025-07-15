@@ -7,8 +7,9 @@ model_type=generate
 MODEL_BENCHMARK_DIR="external/model_benchmark"
 NUM_REQUEST=100
 
-PORT=23333
+PORT=$3
 BASE="http://localhost:$PORT/v1"
+echo "Benchmark with base url $BASE"
 export OPENAI_API_BASE=$BASE 
 export OPENAI_API_KEY="hello"
 #export MAKE_REQUEST=2
@@ -26,7 +27,7 @@ echo "Model name: $model_id"
 echo "============= Benchmark prod ============="
 CMD="python ${MODEL_BENCHMARK_DIR}/run_testloading.py \
 --provider $provider --model-type $model_type \
---result-dir $result_dir \
+--result-dir ${result_dir}_legacy \
 --model-kwargs model=$model_id \
 --batch-sizes 1 --num-con-reqs 1 2 8 16 32 \
 --input-toks 500 --output-toks 150 \

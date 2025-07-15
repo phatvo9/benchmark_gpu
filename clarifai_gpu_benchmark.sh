@@ -7,8 +7,9 @@ model_type=generate
 MODEL_BENCHMARK_DIR="external/model_benchmark"
 NUM_REQUEST=100
 
-PORT=23333
+PORT=$3
 BASE="http://localhost:$PORT/v1"
+echo "Benchmark with base url $BASE"
 export OPENAI_API_BASE=$BASE 
 export OPENAI_API_KEY="hello"
 #export MAKE_REQUEST=2
