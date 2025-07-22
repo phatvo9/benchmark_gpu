@@ -25,6 +25,10 @@
 curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
 /root/miniconda3/bin/conda init
+
+# aarch64
+curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh
+bash Miniconda3-latest-Linux-aarch64.sh
 ```
 
 # Build Docker Image

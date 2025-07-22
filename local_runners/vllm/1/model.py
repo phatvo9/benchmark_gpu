@@ -42,6 +42,7 @@ def vllm_openai_server(checkpoints, **kwargs):
         logger.info("Waiting for " + f"http://{server.host}:{server.port}")
         wait_for_server(f"http://{server.host}:{server.port}")
         logger.info("Server started successfully at " + f"http://{server.host}:{server.port}")
+        print("Server started successfully")
     except Exception as e:
         logger.error(f"Failed to start vllm server: {str(e)}")
         if server.process:
@@ -65,7 +66,7 @@ class VLLMLlamaModel(OpenAIModelClass):
         'max_model_len': 16000,
         'gpu_memory_utilization': 0.9,
         'max-num-batched-tokens': 8192,
-        'tensor_parallel_size': 1,
+        'tensor_parallel_size': os.environ.get("TP_SIZE", 1),
         'port': os.environ.get("SERVER_PORT", 23333),
         'host': 'localhost',
     }

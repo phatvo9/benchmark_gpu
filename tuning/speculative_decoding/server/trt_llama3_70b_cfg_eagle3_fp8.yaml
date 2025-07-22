@@ -1,0 +1,25 @@
+cuda_graph_config:
+  enable_padding: true
+  batch_sizes:
+  - 128
+  - 64
+  - 32
+  - 16
+  - 8
+  - 4
+  - 2
+  - 1
+#print_iter_log: true
+#enable_attention_dp: true
+
+speculative_config:
+  decoding_type: Eagle
+  max_draft_len: 3
+  speculative_model_dir: /root/.cache/huggingface/yuhuili_EAGLE3-LLaMA3.3-Instruct-70B
+  eagle3_one_model: True
+
+#disable_overlap_scheduler: true
+
+# FP8
+dtype: fp8
+#kv_cache_dtype: fp8
