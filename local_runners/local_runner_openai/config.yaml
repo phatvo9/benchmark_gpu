@@ -6,7 +6,7 @@ inference_compute_info:
   num_accelerators: 0
 model:
   app_id: local-runner-app
-  id: local-runner-model
+  id: local-runner-model-2
   model_type_id: text-to-text
   user_id: phatvo
 num_threads: 128

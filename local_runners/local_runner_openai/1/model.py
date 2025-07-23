@@ -6,6 +6,7 @@ from typing import List, Iterator
 from clarifai.runners.models.openai_class import OpenAIModelClass
 from openai import OpenAI
 from clarifai.runners.utils.openai_convertor import build_openai_messages
+from clarifai.runners.utils.data_types import Image
 from clarifai.runners.utils.data_utils import Param
 from clarifai.utils.logging import logger
 
@@ -75,6 +76,7 @@ class VLLMLlamaModel(OpenAIModelClass):
   @OpenAIModelClass.method
   def generate(self,
                prompt: str,
+               image: Image = None,
                chat_history: List[dict] = None,
                tools: List[dict] = None,
                tool_choice: str = None,
@@ -84,7 +86,7 @@ class VLLMLlamaModel(OpenAIModelClass):
     """
     This method is used to stream generated text tokens from a prompt + optional chat history and tools.
     """
-    messages = build_openai_messages(prompt=prompt, messages=chat_history)
+    messages = build_openai_messages(prompt=prompt, messages=chat_history, image=image)
     response = self.client.chat.completions.create(
         model=self.model,
         messages=messages,

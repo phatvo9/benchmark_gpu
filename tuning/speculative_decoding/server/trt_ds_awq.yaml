@@ -1,0 +1,16 @@
+cuda_graph_config:
+  enable_padding: true
+  batch_sizes:
+    - 1
+    - 2
+    - 4
+    - 8
+    - 16
+    - 32
+    - 64
+    - 128
+    - 256
+    - 384
+print_iter_log: true
+enable_attention_dp: false
+quantization_config:
