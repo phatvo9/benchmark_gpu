@@ -29,9 +29,9 @@ CMD="python ${MODEL_BENCHMARK_DIR}/run_testloading.py \
 --provider $provider --model-type $model_type \
 --result-dir ${result_dir}_legacy \
 --model-kwargs model=$model_id \
---batch-sizes 1 --num-con-reqs 1 2 8 16 32 \
+--batch-sizes 1 --num-con-reqs 1 2 8 16 32 64 100 128 \
 --input-toks 500 --output-toks 150 \
---test-cold-start $image_args --time-out-s 10000 --num-reqs $NUM_REQUEST \
+--test-cold-start $image_args --time-out-s 100000 --num-reqs $NUM_REQUEST \
 --infer-kwargs max_tokens=150,temperature=0.7,top_p=0.9"
 echo "===="
 echo "Executing: \n $CMD\n"

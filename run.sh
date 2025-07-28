@@ -11,7 +11,7 @@ tag="latest"
 BENCHMARK_SCRIPT="./clarifai_gpu_benchmark.sh"
 model_path="models/full.txt"
 extra_server_args=""
-server_port=23333
+server_port=25055
 
 while [[ $# -gt 0 ]]; do
   key="$1"
@@ -61,7 +61,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 
 # Framework configuration
-SUPPORTED_FRAMEWORKS=("vllm" "sglang" "lmdeploy")
+SUPPORTED_FRAMEWORKS=("vllm" "sglang" "lmdeploy", "vllm_blackwell")
 
 # Script paths
 CONTAINER_NAME="openai_server"

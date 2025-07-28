@@ -1,0 +1,22 @@
+
+speculative_config:
+  decoding_type: MTP
+  num_nextn_predict_layers: 3
+
+cuda_graph_config:
+  enable_padding: true
+  batch_sizes:
+  # - 896
+  # - 512
+  # - 256
+  - 128
+  - 64
+  - 32
+  - 16
+  - 8
+  - 4
+  - 2
+  - 1
+#print_iter_log: true
+#kv_cache_dtype: fp8
+enable_attention_dp: true

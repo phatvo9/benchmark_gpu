@@ -1,0 +1,27 @@
+cuda_graph_config:
+  enable_padding: true
+  batch_sizes:
+  - 896
+  - 512
+  - 256
+  - 128
+  - 64
+  - 32
+  - 16
+  - 8
+  - 4
+  - 2
+  - 1
+#print_iter_log: true
+#kv_cache_dtype: fp8
+enable_attention_dp: true
+
+# moe_config:
+#   backend: TRTLLM
+# speculative_config:
+#   decoding_type: MTP
+#   num_nextn_predict_layers: 3
+
+#   use_relaxed_acceptance_for_thinking: true
+#   relaxed_topk: 20
+#   relaxed_delta: 0.6
