@@ -29,7 +29,7 @@ CMD="python ${MODEL_BENCHMARK_DIR}/run_testloading.py \
 --provider $provider --model-type $model_type \
 --result-dir $result_dir \
 --model-kwargs model=$model_id \
---batch-sizes 1 --num-con-reqs 1 50 100 \
+--batch-sizes 1 --num-con-reqs 50 \
 --input-toks 500 --output-toks 150 \
 --test-cold-start $image_args --time-out-s 100000 --num-reqs $NUM_REQUEST --skip-if-done \
 --infer-kwargs max_tokens=150,temperature=0.7,top_p=0.9"
@@ -61,7 +61,6 @@ CMD="python ${MODEL_BENCHMARK_DIR}/run_testloading.py \
 echo "===="
 echo "Executing: \n $CMD\n"
 echo "===="
-$CMD
 
 echo "============= Benchmark AA ============="
 
