@@ -19,6 +19,28 @@
 | microsoft/Phi-4-reasoning-plus | ❌ |
 | baidu/ERNIE-4.5-21B-A3B-PT | ❌ |
 
+# Installation
+
+1. Git clone recursive this repository
+
+Or download `model_benchmark.zip`
+
+```bash
+
+pip install -U gdown
+python download_repos.py <Google Drive Link>
+
+```
+
+2. Install dependencies of `model_benchmark`
+
+```bash
+
+pip install -r external/model_benchmark/requirements.txt
+```
+
+
+
 # Install conda
 
 ```bash
