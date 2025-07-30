@@ -5,7 +5,7 @@ result_dir=$2
 model_type=generate
 
 MODEL_BENCHMARK_DIR="external/model_benchmark"
-NUM_REQUEST=2000
+NUM_REQUEST=100
 
 PORT=$3
 BASE="http://localhost:$PORT/v1"
@@ -29,7 +29,7 @@ CMD="python ${MODEL_BENCHMARK_DIR}/run_testloading.py \
 --provider $provider --model-type $model_type \
 --result-dir $result_dir \
 --model-kwargs model=$model_id \
---batch-sizes 1 --num-con-reqs 100 \
+--batch-sizes 1 --num-con-reqs 1 50 100 \
 --input-toks 500 --output-toks 150 \
 --test-cold-start $image_args --time-out-s 100000 --num-reqs $NUM_REQUEST --skip-if-done \
 --infer-kwargs max_tokens=150,temperature=0.7,top_p=0.9"
@@ -51,18 +51,18 @@ $CMD
 # echo "===="
 # $CMD
 
-# CMD="python ${MODEL_BENCHMARK_DIR}/run_testloading.py \
-# --provider $provider --model-type $model_type \
-# --result-dir $result_dir \
-# --model-kwargs model=$model_id \
-# --batch-sizes 1 --num-con-reqs 1 50 100 \
-# --input-toks 10000 --output-toks 1500 \
-# --test-cold-start $image_args --time-out-s 100000 --num-reqs $NUM_REQUEST --skip-if-done \
-# --infer-kwargs max_tokens=1000,temperature=0.7,top_p=0.9"
-# echo "===="
-# echo "Executing: \n $CMD\n"
-# echo "===="
-# $CMD
+CMD="python ${MODEL_BENCHMARK_DIR}/run_testloading.py \
+--provider $provider --model-type $model_type \
+--result-dir $result_dir \
+--model-kwargs model=$model_id \
+--batch-sizes 1 --num-con-reqs 1 50 100 \
+--input-toks 10000 --output-toks 1500 \
+--test-cold-start $image_args --time-out-s 100000 --num-reqs $NUM_REQUEST --skip-if-done \
+--infer-kwargs max_tokens=1000,temperature=0.7,top_p=0.9"
+echo "===="
+echo "Executing: \n $CMD\n"
+echo "===="
+$CMD
 
 echo "============= Benchmark AA ============="
 
