@@ -30,6 +30,13 @@ sudo ln -s $(which python3) /usr/local/bin/python
 mkdir -p tmp/logs/multimodels/
 ```
 
+## Change branch
+
+```
+git fetch origin experiments-day-2
+git checkout experiments-day-2
+```
+
 ## Run benchmark (you may want to wait for other servers up)
 
 `tuning/multimodels/lambda_benchmark/lambda_benchmark.sh`
