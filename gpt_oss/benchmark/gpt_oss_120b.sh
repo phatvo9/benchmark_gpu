@@ -1,7 +1,7 @@
 #!/bin/bash
 
 model_id=openai/gpt-oss-120b
-result_dir=tmp/benchmark/gpt-oss-120b/
+result_dir=tmp/benchmark/gpt-oss/
 model_type=generate
 
 MODEL_BENCHMARK_DIR="external/model_benchmark"
@@ -24,26 +24,26 @@ provider=openai
 formatted_model_id=$(echo "$model_id" | tr '/' '.' | tr '[:upper:]' '[:lower:]')
 
 echo "Model name: $model_id"
-echo "============= Benchmark prod ============="
-CMD="python ${MODEL_BENCHMARK_DIR}/run_testloading.py \
---provider $provider --model-type $model_type \
---result-dir $result_dir \
---model-kwargs model=$model_id \
---batch-sizes 1 --num-con-reqs 1 50 100 \
---input-toks 500 --output-toks 150 \
---test-cold-start $image_args --time-out-s 100000 --num-reqs $NUM_REQUEST --skip-if-done \
---infer-kwargs max_tokens=150"
-echo "===="
-echo "Executing: \n $CMD\n"
-echo "===="
-$CMD
+# echo "============= Benchmark prod ============="
+# CMD="python ${MODEL_BENCHMARK_DIR}/run_testloading.py \
+# --provider $provider --model-type $model_type \
+# --result-dir $result_dir \
+# --model-kwargs model=$model_id \
+# --batch-sizes 1 --num-con-reqs 1 50 100 \
+# --input-toks 500 --output-toks 150 \
+# --test-cold-start $image_args --time-out-s 100000 --num-reqs $NUM_REQUEST --skip-if-done \
+# --infer-kwargs max_tokens=150"
+# echo "===="
+# echo "Executing: \n $CMD\n"
+# echo "===="
+# $CMD
 
 # CMD="python ${MODEL_BENCHMARK_DIR}/run_testloading.py \
 # --provider $provider --model-type $model_type \
 # --result-dir $result_dir \
 # --model-kwargs model=$model_id \
 # --batch-sizes 1 --num-con-reqs 1 50 100 \
-# --input-toks 1000 --output-toks 1000 \
+# --input-toks 10000 --output-toks 1500 \
 # --test-cold-start $image_args --time-out-s 100000 --num-reqs $NUM_REQUEST --skip-if-done \
 # --infer-kwargs max_tokens=1000"
 # echo "===="
@@ -67,25 +67,25 @@ $CMD
 echo "============= Benchmark AA ============="
 
 
-CMD="python ${MODEL_BENCHMARK_DIR}/run_testloading.py \
---provider $provider --model-type $model_type \
---result-dir $result_dir \
---model-kwargs model=$model_id \
---batch-sizes 1 --num-con-reqs 1 10 \
---input-toks 100 --output-toks 300 \
---test-cold-start $image_args --time-out-s 10000 --num-reqs $NUM_REQUEST --skip-if-done \
---infer-kwargs max_completion_tokens=300"
-echo "===="
-echo "Executing: \n $CMD\n"
-echo "===="
-$CMD
+# CMD="python ${MODEL_BENCHMARK_DIR}/run_testloading.py \
+# --provider $provider --model-type $model_type \
+# --result-dir $result_dir \
+# --model-kwargs model=$model_id \
+# --batch-sizes 1 --num-con-reqs 1 10 \
+# --input-toks 100 --output-toks 300 \
+# --test-cold-start $image_args --time-out-s 10000 --num-reqs $NUM_REQUEST --skip-if-done \
+# --infer-kwargs max_completion_tokens=300"
+# echo "===="
+# echo "Executing: \n $CMD\n"
+# echo "===="
+# $CMD
 
 
 CMD="python ${MODEL_BENCHMARK_DIR}/run_testloading.py \
 --provider $provider --model-type $model_type \
 --result-dir $result_dir \
 --model-kwargs model=$model_id \
---batch-sizes 1 --num-con-reqs 1 10 \
+--batch-sizes 1 --num-con-reqs 1 10 50 100 \
 --input-toks 1000 --output-toks 1000 \
 --test-cold-start $image_args --time-out-s 10000 --num-reqs $NUM_REQUEST --skip-if-done \
 --infer-kwargs max_completion_tokens=1000"
@@ -95,29 +95,29 @@ echo "===="
 $CMD
 
 
-CMD="python ${MODEL_BENCHMARK_DIR}/run_testloading.py \
---provider $provider --model-type $model_type \
---result-dir $result_dir \
---model-kwargs model=$model_id \
---batch-sizes 1 --num-con-reqs 1 10 \
---input-toks 10000 --output-toks 1500 \
---test-cold-start $image_args --time-out-s 10000 --num-reqs $NUM_REQUEST --skip-if-done \
---infer-kwargs max_completion_tokens=1500"
-echo "===="
-echo "Executing: \n $CMD\n"
-echo "===="
-$CMD
+# CMD="python ${MODEL_BENCHMARK_DIR}/run_testloading.py \
+# --provider $provider --model-type $model_type \
+# --result-dir $result_dir \
+# --model-kwargs model=$model_id \
+# --batch-sizes 1 --num-con-reqs 1 10 \
+# --input-toks 10000 --output-toks 1500 \
+# --test-cold-start $image_args --time-out-s 10000 --num-reqs $NUM_REQUEST --skip-if-done \
+# --infer-kwargs max_completion_tokens=1500"
+# echo "===="
+# echo "Executing: \n $CMD\n"
+# echo "===="
+# $CMD
 
 
-CMD="python ${MODEL_BENCHMARK_DIR}/run_testloading.py \
---provider $provider --model-type $model_type \
---result-dir $result_dir \
---model-kwargs model=$model_id \
---batch-sizes 1 --num-con-reqs 1 10 100 \
---input-toks 100000 --output-toks 5000 \
---test-cold-start $image_args --time-out-s 10000 --num-reqs $NUM_REQUEST --skip-if-done \
---infer-kwargs max_completion_tokens=5000"
-echo "===="
-echo "Executing: \n $CMD\n"
-echo "===="
-$CMD
+# CMD="python ${MODEL_BENCHMARK_DIR}/run_testloading.py \
+# --provider $provider --model-type $model_type \
+# --result-dir $result_dir \
+# --model-kwargs model=$model_id \
+# --batch-sizes 1 --num-con-reqs 1 10 100 \
+# --input-toks 100000 --output-toks 5000 \
+# --test-cold-start $image_args --time-out-s 10000 --num-reqs $NUM_REQUEST --skip-if-done \
+# --infer-kwargs max_completion_tokens=5000"
+# echo "===="
+# echo "Executing: \n $CMD\n"
+# echo "===="
+# $CMD
